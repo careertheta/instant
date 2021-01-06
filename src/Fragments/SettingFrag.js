@@ -8,6 +8,7 @@ const SettingFrag = () => {
 
     const [dcharge, setDcharge] = useState()
     const [mcharge, setMcharge] = useState()
+    const [version, setVersion] = useState()
     const [loading, setLoading] = useState(true)
 
     useEffect(()=>{
@@ -17,6 +18,7 @@ const SettingFrag = () => {
             console.log('User data: ', documentSnapshot.data());
             setDcharge(documentSnapshot.data().dcharge);
             setMcharge(documentSnapshot.data().mcharge)
+            setVersion(documentSnapshot.data().appversion)
             setTimeout(() => {
                 setLoading(false)
             }, 1000);
@@ -26,7 +28,7 @@ const SettingFrag = () => {
 
     const update = () =>{
         console.log(mcharge)
-        if(mcharge === undefined || dcharge === undefined){
+        if(mcharge === undefined || dcharge === undefined || version == undefined){
             swal({
                 title: "Sorry!",
                 text: "Empty Field",
@@ -39,7 +41,8 @@ const SettingFrag = () => {
             .doc('setting')
             .update({
                 dcharge: parseInt(dcharge, 10),
-                mcharge:  parseInt(mcharge, 10)
+                mcharge:  parseInt(mcharge, 10),
+                appversion:version,
             })
             .then(() => {
                 swal({
@@ -74,6 +77,14 @@ const SettingFrag = () => {
           color="secondary" size="small" id="mch" label="Minimum Amount" variant="outlined" fullWidth margin="normal" />
          
           <br/>
+
+          <TextField
+          onChange={e => setVersion(e.target.value)}
+          value={version}
+          color="secondary" size="small" id="dch"  label="App Version" variant="outlined" fullWidth margin="normal" />
+         
+          <br/>
+
           <Button onClick={()=>update()} variant="contained" color="primary" fullWidth>
               Update
           </Button>
