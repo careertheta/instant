@@ -12,12 +12,12 @@ const catReducer  = (state=initialState, action) =>{
     return state
 }
 
-// const proReducer  = (state=initialState, action) =>{
-//   if(action.type == "addproduct"){
-//       return action.payload
-//   }
-//   return state
-// }
+const restroReducer  = (state=initialState, action) =>{
+  if(action.type == "addrestro"){
+      return action.payload
+  }
+  return state
+}
 
 // const cartItems = (state = initialState, action) =>{
 //     switch (action.type) {
@@ -37,7 +37,8 @@ const catReducer  = (state=initialState, action) =>{
 
 
 const reducer = combineReducers({
-  categories:catReducer
+  categories:catReducer,
+  restro:restroReducer
 })
 
 export default reducer

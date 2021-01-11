@@ -1,8 +1,10 @@
-import { Button, ButtonGroup, CircularProgress, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Button, Switch, ButtonGroup, CircularProgress, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 import { db } from '../config';
+import {useSelector, useDispatch} from 'react-redux'
+
 
 const useStyles = makeStyles({
     table: {
@@ -19,12 +21,30 @@ const OrderFrag = () => {
     const [oview, setOview] = useState(false)
     const [odesc, setOdesc] = useState([])
     const [ntotal, setNtotal] = useState()
+    const [lastid, setLastid] = useState()
+
+    const alldata = useSelector(state=>{
+        return state
+    })
+
+    const [shopstate, setShopstate] = useState({
+        checkedA: false
+    });
+
     let nstatus = ""
     let colorn = ""
 
     useEffect(()=>{
+        if(alldata.restro.status != undefined){
+            setShopstate({checkedA:alldata.restro.status})
+            console.log(alldata.restro.status)
+        }else{
+            console.log("Undefined")
+        }
+        // setShopstate({checkedA:alldata.restro.status})
         const subscriber = db.collection('Orders')
         .orderBy('somoy', 'desc')
+        .limit(102)
         .onSnapshot(querySnapshot => {
             const orderTop = [];
             querySnapshot.forEach(documentSnapshot => {
@@ -37,14 +57,14 @@ const OrderFrag = () => {
               if(orderTop.length != 0){
                 setOrder(orderTop)
                 setLoading(false)
-                console.log(orderTop)
+                // console.log(orderTop)
             }else{
               console.log("No Orders")
             }
         });
    
         return () => subscriber();
-    }, [])
+    }, [alldata.restro.status])
 
     const acceptOrder = (id) =>{
         console.log(id)
@@ -110,8 +130,36 @@ const OrderFrag = () => {
         setOview(false)
     }
 
+    const handleSwitchChange = (event) => {
+        setShopstate({ ...shopstate, [event.target.name]: event.target.checked });
+        console.log(event.target.checked)
+        db.collection('Restro')
+        .doc("setting")
+        .update({
+            status: event.target.checked,
+        })
+        .then(() => {
+            swal({
+                title: "Good job!",
+                text: "Status Updated",
+                icon: "success",
+                button: "Ok!",
+              });
+        });
+    };
+
     return (
         <div>
+            {loading? "Loading.." : 
+            <div>
+                {shopstate.checkedA? "Shop Open" : "Shop Closed"}
+                <Switch
+                    checked={shopstate.checkedA}
+                    onChange={handleSwitchChange}
+                    name="checkedA"
+                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+            </div> }
             {oview? 
                 <div>
                 <TableContainer component={Paper}>
@@ -133,7 +181,7 @@ const OrderFrag = () => {
 
                     return (
                                                 
-                        <TableRow key={row.index} style={{backgroundColor:colorn}}>
+                        <TableRow key={index} style={{backgroundColor:colorn}}>
                         <TableCell align="left">
                             {row.name} {row.proname}
                         </TableCell>    

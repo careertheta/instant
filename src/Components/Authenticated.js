@@ -22,7 +22,23 @@ const Authenticated = (props) => {
           });
           
           dispatch({type:"addcategory", payload:catTop})
-          console.log(catTop)
+          if(catTop.length != 0){
+                db.collection('Restro').get()
+                .then(querySnapshot => {
+                const restroTop = [];
+                querySnapshot.forEach(documentSnapshot => {
+                    restroTop.push({
+                        ...documentSnapshot.data(),
+                        key: documentSnapshot.id,
+                    });
+                });
+
+                dispatch({type:"addrestro", payload:restroTop[2]})
+            }); 
+          }else{
+            console.log("We are not ready")
+          }
+          
         });
 
     },[])

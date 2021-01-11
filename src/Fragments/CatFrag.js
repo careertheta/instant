@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import { Avatar, Button, Box, TextField} from '@material-ui/core';
+import { Avatar, Box, Button, TextField } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,11 +7,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import {useSelector, useDispatch} from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
-import CatModal from '../Fragments/CatModal'
-
+import { db } from '../config';
 
 
 const useStyles = makeStyles({
@@ -27,13 +26,13 @@ const CatFrag = () => {
   const [data, setData] = useState([])
   const [show, setShow] = useState(false)
   const [editid, setEditid] =  useState(null)
-
   const alldata = useSelector(state=>{
     return state
   })
 
   useEffect(()=>{
       setData(alldata.categories)
+      console.log(alldata.categories)
       if(alldata.categories.length != 0){
           setLoading(false)
       }
@@ -43,6 +42,45 @@ const CatFrag = () => {
     console.log(id)
     setEditid(id)
     setShow(true)
+  }
+
+  const editStatus = (status, id) =>{
+
+        
+        db.collection('category')
+        .doc(id)
+        .get()
+        .then(documentSnapshot => {
+            if(documentSnapshot.data().status == false){
+                  db.collection('category')
+                  .doc(id)
+                  .update({
+                      status: true,
+                  })
+                  .then(() => {
+                      swal({
+                          title: "Good job!",
+                          text: "Category Opened",
+                          icon: "success",
+                          button: "Ok!",
+                        });
+                  });
+            }else{
+                db.collection('category')
+                .doc(id)
+                .update({
+                    status: false,
+                })
+                .then(() => {
+                    swal({
+                        title: "Good job!",
+                        text: "Category Closed",
+                        icon: "success",
+                        button: "Ok!",
+                    });
+                });
+            }
+        });
   }
 
   const update = () =>{
@@ -72,6 +110,7 @@ const CatFrag = () => {
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell align="left">Image</TableCell>
+            <TableCell align="left">Status</TableCell>
             <TableCell align="left">Edit</TableCell>
           </TableRow>
         </TableHead>
@@ -83,6 +122,10 @@ const CatFrag = () => {
               </TableCell>
               <TableCell align="right">
                 <Avatar alt="Remy Sharp" src={row.pic} />
+              </TableCell>
+              <TableCell align="left">
+               <Button variant="outlined" color="primary" onClick={()=> editStatus(row.status, row.key)}> Update</Button>
+                
               </TableCell>
               <TableCell align="left">
                 <Button variant="outlined" color="primary" onClick={()=> editCategory(row.name)}>EDIT</Button>
