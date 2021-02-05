@@ -10,12 +10,16 @@ import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
-import { db } from '../config';
+import { db, storage } from '../config';
 
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+  },
+
+  input: {
+    display: 'none',      
   },
 }); 
 
@@ -26,6 +30,7 @@ const CatFrag = () => {
   const [data, setData] = useState([])
   const [show, setShow] = useState(false)
   const [editid, setEditid] =  useState(null)
+  const [pic, setPic] = useState()
   const alldata = useSelector(state=>{
     return state
   })
@@ -38,9 +43,10 @@ const CatFrag = () => {
       }
   })
 
-  const editCategory = (id) =>{
+  const editCategory = (id, picnow) =>{
     console.log(id)
     setEditid(id)
+    setPic(picnow)
     setShow(true)
   }
 
@@ -84,24 +90,73 @@ const CatFrag = () => {
   }
 
   const update = () =>{
-    setShow(false)
+    console.log(editid, pic)
+    setShow(false)  
   }
+
+  // const handleChange = (event) => {
+  //   setValue(event.target.value);
+  // };
+
+      const handleImageChange = (e) => {
+
+      const file = e.target.files[0]
+      console.log(e.target)
+      var storageRef = storage.ref();
+      const fileRef = storageRef.child(file.name).put(file);
+      fileRef.on('state_changed', function(snapshot){
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+        }, function(error) {
+          // Handle unsuccessful uploads
+        }, function() {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          fileRef.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            console.log('File available at', downloadURL);
+            setPic(downloadURL)
+          });
+        });
+
+      };
 
 
   return (
     <div>
     {show?  
-    <Box textAlign="center" p="25px" mt="50px" boxShadow="2" borderRadius="6px">
+    <Box  p="25px" mt="50px" boxShadow="2" borderRadius="6px">
         <TextField
           // onChange={e => hemail(e)}
           value={editid}
           color="secondary" size="small" id="outlined-basic" label="Name" variant="outlined" fullWidth margin="normal" />
-         
-          <br/>
-          <br/>
-          <Button onClick={()=>update()} variant="contained" color="primary" fullWidth>
-              Update
-          </Button>
+
+                  <input
+                        accept="image/*"
+                        className={classes.input}
+                        id="contained-button-file"
+                        multiple
+                        type="file"
+                        onChange={handleImageChange}
+                    />
+
+                       <label htmlFor="contained-button-file">
+                            <Button variant="contained" color="primary" component="span">
+                                Upload
+                            </Button>
+                        </label>
+                    
+
+                    <Box p="25px" mt="20px" boxShadow="2" borderRadius="6px">
+                      <Avatar alt="Pic" src={pic} />
+                    </Box>
+
+                    <br/>
+                    <br/>
+                  <Button onClick={()=>update()} variant="contained" color="primary" fullWidth>
+                      Update
+                  </Button>
     </Box> :
     <TableContainer component={Paper}>
       {loading? "Loading..." : 
@@ -128,7 +183,7 @@ const CatFrag = () => {
                 
               </TableCell>
               <TableCell align="left">
-                <Button variant="outlined" color="primary" onClick={()=> editCategory(row.name)}>EDIT</Button>
+                <Button variant="outlined" color="primary" onClick={()=> editCategory(row.name, row.pic)}>EDIT</Button>
               </TableCell>
             </TableRow>
           ))}

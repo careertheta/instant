@@ -16,6 +16,7 @@ import CatFrag from '../Fragments/CatFrag'
 import HomeFrag from '../Fragments/HomeFrag'
 import OrderFrag from '../Fragments/OrderFrag'
 import SettingFrag from '../Fragments/SettingFrag'
+import AddCategory from '../Fragments/AddCategory'
 import AddProductFrag from '../Fragments/AddProductFrag'
 import {useSelector, useDispatch} from 'react-redux'
 import { auth, db } from '../config'
@@ -135,12 +136,21 @@ const  Home = () => {
               </ListItem>
               </Link>
 
+              <Link to={`/addcategory`} className={classes.nodec}>
+              <ListItem button>
+                <ListItemIcon>
+                    <Fastfood/>
+                </ListItemIcon>
+                    <ListItemText primary="+ Category" />
+               </ListItem>
+               </Link>     
+
               <Link to={`/product`} className={classes.nodec}>
               <ListItem button>
                 <ListItemIcon>
                     <Fastfood/>
                 </ListItemIcon>
-                    <ListItemText primary="Add Product" />
+                    <ListItemText primary="+ Product" />
                </ListItem>
                </Link>              
 
@@ -183,9 +193,10 @@ const  Home = () => {
         <Route path="/category" render={({match}) => (
             <CatFrag/> 
         )}/>
-        {/* <CatFrag/> */}
-        {/* <OrderFrag/> */}
-        {/* <AddProductFrag/> */}
+
+        <Route path="/addcategory" render={({match}) => (
+            <AddCategory/> 
+        )}/>
       </main>
     </div>
   );
