@@ -17,6 +17,7 @@ import HomeFrag from '../Fragments/HomeFrag'
 import OrderFrag from '../Fragments/OrderFrag'
 import SettingFrag from '../Fragments/SettingFrag'
 import AddCategory from '../Fragments/AddCategory'
+import EditProductFrag from '../Fragments/EditProductFrag'
 import AddProductFrag from '../Fragments/AddProductFrag'
 import {useSelector, useDispatch} from 'react-redux'
 import { auth, db } from '../config'
@@ -152,6 +153,15 @@ const  Home = () => {
                 </ListItemIcon>
                     <ListItemText primary="+ Product" />
                </ListItem>
+               </Link>       
+
+               <Link to={`/editproduct`} className={classes.nodec}>
+              <ListItem button>
+                <ListItemIcon>
+                    <Fastfood/>
+                </ListItemIcon>
+                    <ListItemText primary="Edit Product" />
+               </ListItem>
                </Link>              
 
                <Link to={`/setting`} className={classes.nodec}>
@@ -196,6 +206,10 @@ const  Home = () => {
 
         <Route path="/addcategory" render={({match}) => (
             <AddCategory/> 
+        )}/>
+
+        <Route path="/editproduct" render={({match}) => (
+            <EditProductFrag/> 
         )}/>
       </main>
     </div>

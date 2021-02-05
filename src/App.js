@@ -63,6 +63,12 @@ function App() {
             </Authenticated>
           </Route>
 
+          <Route exact path="/editproduct">
+            <Authenticated>
+              <Home/>
+            </Authenticated>
+          </Route>
+
 
         {/* <Route exact path="/home" component={Home}></Route> */}
          <Route exact path="/login">

@@ -89,6 +89,7 @@ const AddProductFrag = () => {
                       id: documentSnapshot.data().id + 1,
                       name:name,
                       pic:pic,
+                      status:true,
                       type:{choiceone:{name:nameone, price:priceone}, choicetwo:{name:nametwo, price:pricetwo}, 
                         choicethree:{name:namethree, price:pricethree}}
                     })

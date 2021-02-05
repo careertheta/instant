@@ -31,6 +31,7 @@ const CatFrag = () => {
   const [show, setShow] = useState(false)
   const [editid, setEditid] =  useState(null)
   const [pic, setPic] = useState()
+  const [cname, setCname] = useState()
   const alldata = useSelector(state=>{
     return state
   })
@@ -43,10 +44,11 @@ const CatFrag = () => {
       }
   })
 
-  const editCategory = (id, picnow) =>{
+  const editCategory = (id, nname, picnow) =>{
     console.log(id)
     setEditid(id)
     setPic(picnow)
+    setCname(nname)
     setShow(true)
   }
 
@@ -91,6 +93,21 @@ const CatFrag = () => {
 
   const update = () =>{
     console.log(editid, pic)
+    db.collection('category')
+        .doc(editid)
+        .update({
+            name:cname,
+            pic:pic,
+            status:false,
+        })
+        .then(() => {
+            swal({
+                title: "Good job!",
+                text: "Category Updated",
+                icon: "success",
+                button: "Ok!",
+              });
+        });
     setShow(false)  
   }
 
@@ -128,8 +145,8 @@ const CatFrag = () => {
     {show?  
     <Box  p="25px" mt="50px" boxShadow="2" borderRadius="6px">
         <TextField
-          // onChange={e => hemail(e)}
-          value={editid}
+          onChange={e => setCname(e)}
+          value={cname}
           color="secondary" size="small" id="outlined-basic" label="Name" variant="outlined" fullWidth margin="normal" />
 
                   <input
@@ -183,7 +200,7 @@ const CatFrag = () => {
                 
               </TableCell>
               <TableCell align="left">
-                <Button variant="outlined" color="primary" onClick={()=> editCategory(row.name, row.pic)}>EDIT</Button>
+                <Button variant="outlined" color="primary" onClick={()=> editCategory(row.key, row.name, row.pic)}>EDIT</Button>
               </TableCell>
             </TableRow>
           ))}
