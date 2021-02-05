@@ -173,7 +173,7 @@ const EditProductFrag = () => {
             {show?  
             <Box  p="25px" mt="50px" boxShadow="2" borderRadius="6px">
                 <TextField
-                // onChange={e => hemail(e)}
+                onChange={e => setPname(e.target.value)}
                 value={pname}
                 color="secondary" size="small" id="outlined-basic" label="Name" variant="outlined" fullWidth margin="normal" />
 
@@ -185,7 +185,7 @@ const EditProductFrag = () => {
 
                 
                 <TextField
-                // onChange={e => hemail(e)}
+                onChange={e => setValue(e.target.value)}
                 value={value}
                 color="secondary" size="small" id="outlined-basic" label="category ID" variant="outlined" fullWidth margin="normal" />
 

@@ -145,7 +145,7 @@ const CatFrag = () => {
     {show?  
     <Box  p="25px" mt="50px" boxShadow="2" borderRadius="6px">
         <TextField
-          onChange={e => setCname(e)}
+          onChange={e => setCname(e.target.value)}
           value={cname}
           color="secondary" size="small" id="outlined-basic" label="Name" variant="outlined" fullWidth margin="normal" />
 
