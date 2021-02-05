@@ -1,9 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import { Button, Box, TextField, Container, Avatar, FormLabel, RadioGroup, Radio, FormControlLabel, CircularProgress} from '@material-ui/core';
-import swal from 'sweetalert';
+import { Avatar, Box, Button, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { auth, db, storage } from '../config'
-import {useSelector, useDispatch} from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import swal from 'sweetalert';
+import { db, storage } from '../config';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,6 +24,7 @@ const AddProductFrag = () => {
         return state
     })
 
+    const history = useHistory();
     const classes = useStyles();
     const theme = useTheme();
     const [lastid, setLastid] =  useState()
@@ -77,27 +80,56 @@ const AddProductFrag = () => {
 
     const submitPro = () =>{
 
-        db.collection('products')
-        .orderBy('id', 'desc')
-        .limit(1)
-        .get()
-        .then(querySnapshot => {
-            querySnapshot.forEach(documentSnapshot => {                    
-                    db.collection('products')
-                    .add({
-                      category: parseInt(value.charAt(0), 10),
-                      id: documentSnapshot.data().id + 1,
-                      name:name,
-                      pic:pic,
-                      status:true,
-                      type:{choiceone:{name:nameone, price:priceone}, choicetwo:{name:nametwo, price:pricetwo}, 
-                        choicethree:{name:namethree, price:pricethree}}
-                    })
-                    .then(() => {
-                      console.log('product added!');
-                    });   
+      swal({
+        title: "Want to add Product?",
+        text: "Once Added, you will not be able to delete the file!",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          if(name == "" || priceone == "" || nameone == "" || pic == "" || category == ""){
+            swal({
+              title: "Empty Fields!",
+              text: "Check Empty Fields",
+              icon: "warning",
+              button: "Ok!",
             });
-        });
+          }else{
+            db.collection('products')
+            .orderBy('id', 'desc')
+            .limit(1)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(documentSnapshot => {                    
+                        db.collection('products')
+                        .add({
+                          category: parseInt(value.charAt(0), 10),
+                          id: documentSnapshot.data().id + 1,
+                          name:name,
+                          pic:pic,
+                          status:true,
+                          type:{choiceone:{name:nameone, price:priceone}, choicetwo:{name:nametwo, price:pricetwo}, 
+                            choicethree:{name:namethree, price:pricethree}}
+                        })
+                        .then(() => {
+                          swal("Product Added", {
+                            icon: "success",
+                          });
+
+                          // AFTER SUCCESS MOVE TO ALL PRODUCTS
+                          let path = `editproduct`; 
+                          history.push(path);
+                        });   
+                });
+            });
+          }
+
+        } else {
+          swal("No Product Added");
+        }
+      });
     }
 
     return (

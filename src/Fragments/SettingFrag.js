@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import { Button, Box, TextField, Container, CircularProgress} from '@material-ui/core';
+import { Box, Button, CircularProgress, Container, TextField } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 import swal from 'sweetalert';
-import { makeStyles } from '@material-ui/core/styles';
-import { auth, db } from '../config'
+import { db } from '../config';
 
 const SettingFrag = () => {
 

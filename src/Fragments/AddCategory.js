@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import { Button, Box, TextField, Container, Avatar, FormLabel, RadioGroup, Radio, FormControlLabel, CircularProgress} from '@material-ui/core';
-import { auth, db, storage } from '../config'
-import swal from 'sweetalert';
+import { Avatar, Box, Button, TextField } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import swal from 'sweetalert';
+import { db, storage } from '../config';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const AddCategory = () => {
 
     const classes = useStyles();
+    const history = useHistory();
     const theme = useTheme();
     const [pic, setPic] = useState()
     const [name, setName] = useState("")
@@ -38,7 +40,12 @@ const AddCategory = () => {
                       status:false,
                     })
                     .then(() => {
-                      console.log('Catgeory added!');
+                      swal("Catgeory Added", {
+                        icon: "success",
+                      });
+                       // AFTER SUCCESS MOVE TO ALL PRODUCTS
+                       let path = `category`; 
+                       history.push(path);
                     });   
             });
         });

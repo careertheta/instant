@@ -1,9 +1,9 @@
-import { Button, Switch, ButtonGroup, CircularProgress, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Button, ButtonGroup, CircularProgress, Container, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { db } from '../config';
-import {useSelector, useDispatch} from 'react-redux'
 
 
 const useStyles = makeStyles({
@@ -76,7 +76,7 @@ const OrderFrag = () => {
         .then(() => {
             swal({
                 title: "Good job!",
-                text: "Status Updated",
+                text: "Order Accepted",
                 icon: "success",
                 button: "Ok!",
               });
@@ -93,7 +93,7 @@ const OrderFrag = () => {
         .then(() => {
             swal({
                 title: "Good job!",
-                text: "Status Updated",
+                text: "On The Way",
                 icon: "success",
                 button: "Ok!",
               });
@@ -109,11 +109,38 @@ const OrderFrag = () => {
         .then(() => {
             swal({
                 title: "Good job!",
-                text: "Status Updated",
+                text: "Delivered",
                 icon: "success",
                 button: "Ok!",
               });
         });
+    }
+
+    const cancelOrder = (id) =>{
+
+        swal({
+            title: "Are you sure?",
+            text: "Do you want to cancel the order!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                db.collection('Orders')
+                .doc(id)
+                .update({
+                    status: 4,
+                })
+                .then(() => {
+                    swal("Order Cancelled!", {
+                        icon: "success",
+                    });
+                });
+            } else {
+              swal("Order is safe!");
+            }
+          });
     }
 
     const viewOrder = (id, tamount) =>{
@@ -232,7 +259,7 @@ const OrderFrag = () => {
                     {order.map((row, index) => {
                     if(row.status == "0"){
                         nstatus = "Pending.."
-                        colorn = "#ff3d00"
+                        colorn = "#ff7675"
                     }else if(row.status == "1"){
                         nstatus = "Processing..."
                         colorn = "white"
@@ -242,7 +269,11 @@ const OrderFrag = () => {
                     }else if(row.status == "3"){
                         nstatus = "Delivered"
                         colorn = "#8bc34a"
-                    }            
+                    }else if(row.status == "4"){
+                        nstatus = "cancelled"
+                        colorn = "#ff3d00"
+                    }          
+                      
                     
                     return (
                             
@@ -262,6 +293,7 @@ const OrderFrag = () => {
                                 <Button  onClick={()=> acceptOrder(row.key)}>Accept</Button>
                                 <Button  onClick={()=> onTheWayOrder(row.key)}>On The Way</Button>
                                 <Button  onClick={()=> deliveredOrder(row.key)}>Delivered</Button>
+                                <Button  onClick={()=> cancelOrder(row.key)}>Cancel</Button>
                             </ButtonGroup>
                         </TableCell>
                         </TableRow>

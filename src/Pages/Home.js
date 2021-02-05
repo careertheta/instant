@@ -1,35 +1,29 @@
-import React, {useEffect} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import {HomeRounded, Category, Fastfood, Settings, PowerSettingsNew, ClassRounded} from '@material-ui/icons';
-import CatFrag from '../Fragments/CatFrag'
-import HomeFrag from '../Fragments/HomeFrag'
-import OrderFrag from '../Fragments/OrderFrag'
-import SettingFrag from '../Fragments/SettingFrag'
-import AddCategory from '../Fragments/AddCategory'
-import EditProductFrag from '../Fragments/EditProductFrag'
-import AddProductFrag from '../Fragments/AddProductFrag'
-import {useSelector, useDispatch} from 'react-redux'
-import { auth, db } from '../config'
-import swal from 'sweetalert';
+import { makeStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { Category, Fastfood, HomeRounded, PowerSettingsNew, Settings } from '@material-ui/icons';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams
+  Link, Route,
+  useRouteMatch
 } from "react-router-dom";
+import swal from 'sweetalert';
+import { auth } from '../config';
+import AddCategory from '../Fragments/AddCategory';
+import AddProductFrag from '../Fragments/AddProductFrag';
+import CatFrag from '../Fragments/CatFrag';
+import EditProductFrag from '../Fragments/EditProductFrag';
+import OrderFrag from '../Fragments/OrderFrag';
+import SettingFrag from '../Fragments/SettingFrag';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
