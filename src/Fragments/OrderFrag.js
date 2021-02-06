@@ -22,6 +22,8 @@ const OrderFrag = () => {
     const [odesc, setOdesc] = useState([])
     const [ntotal, setNtotal] = useState()
     const [lastid, setLastid] = useState()
+    const [custnumber, setCusnumber] = useState()
+    const [cusaddress, setCusaddress] = useState()
 
     const alldata = useSelector(state=>{
         return state
@@ -74,6 +76,27 @@ const OrderFrag = () => {
             status: 1,
         })
         .then(() => {
+
+            fetch('https://fcm.googleapis.com/v1/projects/myproject-b5ae1/messages:send', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    messsage:{
+                        token:'cVv-vn8NSNaiWEHBeuu8SH:APA91bH-ceXLojm_SvGzeuYQiYg2bJmODn88Bt-4eS7FreX4NJHp0lEEFpmh7gl7fkSK-0dJAr9D_YAp8MmDGuee80zmSfZpPZudfXYk1XmEzW-3gJuUuMtygQATsquliEM_8c503zCQ',
+                        data:{},
+                        notification:{
+                            body:'notify',
+                            title:'great'
+                        }
+                    }
+                 
+                })
+              });
+
+
             swal({
                 title: "Good job!",
                 text: "Order Accepted",
@@ -143,8 +166,10 @@ const OrderFrag = () => {
           });
     }
 
-    const viewOrder = (id, tamount) =>{
+    const viewOrder = (id, tamount, num, address) =>{
        setOview(true)
+       setCusaddress(address)
+       setCusnumber(num)
        setNtotal(tamount)
        setOdesc(order[id].order)
         setTimeout(() => {
@@ -222,6 +247,18 @@ const OrderFrag = () => {
                     )
 
                     })}
+                        
+                        <TableRow>
+                        <TableCell align="left">
+                           Address - {cusaddress}
+                        </TableCell>
+                        <TableCell align="left">
+                           Number - {custnumber}
+                        </TableCell>
+                        <TableCell align="left">
+                            
+                        </TableCell>    
+                        </TableRow>
 
                         <TableRow>
                         <TableCell align="left">
@@ -289,7 +326,7 @@ const OrderFrag = () => {
                         </TableCell>
                         <TableCell align="left">
                             <ButtonGroup variant="text" color="secondary" aria-label="text primary button group">
-                                <Button  onClick={()=> viewOrder(index, row.amount)}>View</Button>
+                                <Button  onClick={()=> viewOrder(index, row.amount, row.number, row.address)}>View</Button>
                                 <Button  onClick={()=> acceptOrder(row.key)}>Accept</Button>
                                 <Button  onClick={()=> onTheWayOrder(row.key)}>On The Way</Button>
                                 <Button  onClick={()=> deliveredOrder(row.key)}>Delivered</Button>
