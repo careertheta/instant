@@ -68,7 +68,7 @@ const OrderFrag = () => {
         return () => subscriber();
     }, [alldata.restro.status])
 
-    const acceptOrder = (id) =>{
+    const acceptOrder = (id, num) =>{
         console.log(id)
         db.collection('Orders')
         .doc(id)
@@ -77,25 +77,19 @@ const OrderFrag = () => {
         })
         .then(() => {
 
-            fetch('https://fcm.googleapis.com/v1/projects/myproject-b5ae1/messages:send', {
+            
+            fetch('https://login.99smsservice.com/sms/api?action=send-sms&api_key=bUhqZGRJeW5zcnRvaGVFQ3hpZ0o=', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    messsage:{
-                        token:'cVv-vn8NSNaiWEHBeuu8SH:APA91bH-ceXLojm_SvGzeuYQiYg2bJmODn88Bt-4eS7FreX4NJHp0lEEFpmh7gl7fkSK-0dJAr9D_YAp8MmDGuee80zmSfZpPZudfXYk1XmEzW-3gJuUuMtygQATsquliEM_8c503zCQ',
-                        data:{},
-                        notification:{
-                            body:'notify',
-                            title:'great'
-                        }
-                    }
-                 
+                  from: 'SMSEXP',
+                  to:num,
+                  sms: `Your Order with Order No - ${id} has been -- ACCEPTED -- regards from Crystal Restaurant, Lumding`
                 })
               });
-
 
             swal({
                 title: "Good job!",
@@ -139,7 +133,7 @@ const OrderFrag = () => {
         });
     }
 
-    const cancelOrder = (id) =>{
+    const cancelOrder = (id, num) =>{
 
         swal({
             title: "Are you sure?",
@@ -156,6 +150,20 @@ const OrderFrag = () => {
                     status: 4,
                 })
                 .then(() => {
+
+                    fetch('https://login.99smsservice.com/sms/api?action=send-sms&api_key=bUhqZGRJeW5zcnRvaGVFQ3hpZ0o=', {
+                        method: 'POST',
+                        headers: {
+                          Accept: 'application/json',
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                          from: 'SMSEXP',
+                          to:num,
+                          sms: `Your Order with Order No - ${id} has been -- CANCELLED -- regards from Crystal Restaurant, Lumding`
+                        })
+                      });
+
                     swal("Order Cancelled!", {
                         icon: "success",
                     });
@@ -327,10 +335,10 @@ const OrderFrag = () => {
                         <TableCell align="left">
                             <ButtonGroup variant="text" color="secondary" aria-label="text primary button group">
                                 <Button  onClick={()=> viewOrder(index, row.amount, row.number, row.address)}>View</Button>
-                                <Button  onClick={()=> acceptOrder(row.key)}>Accept</Button>
+                                <Button  onClick={()=> acceptOrder(row.key, row.number)}>Accept</Button>
                                 <Button  onClick={()=> onTheWayOrder(row.key)}>On The Way</Button>
                                 <Button  onClick={()=> deliveredOrder(row.key)}>Delivered</Button>
-                                <Button  onClick={()=> cancelOrder(row.key)}>Cancel</Button>
+                                <Button  onClick={()=> cancelOrder(row.key, row.number)}>Cancel</Button>
                             </ButtonGroup>
                         </TableCell>
                         </TableRow>
