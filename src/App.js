@@ -7,7 +7,10 @@ import Login from './Pages/Login';
 import Home from './Pages/Home'
 import Authenticated from './Components/Authenticated';
 
+
 function App() {
+
+  
 
   // var docRef = db.collection("products").doc("1zQ3N9oLYMLa8gMIBGUB")
 

@@ -1,5 +1,6 @@
 import firebase from "firebase"
 
+
 var firebaseConfig = {
     apiKey: "AIzaSyDPmWHPmG1CDpxFc3zzNU4exlbgOvHQfOQ",
     authDomain: "crystaltouch-73474.firebaseapp.com",
@@ -10,7 +11,7 @@ var firebaseConfig = {
     measurementId: "G-D0CGL54FK2"
   };
 
-  firebase.initializeApp(firebaseConfig)
+  firebase.initializeApp(firebaseConfig)  
 
   const db = firebase.firestore();
   const auth = firebase.auth();

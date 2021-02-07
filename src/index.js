@@ -10,6 +10,13 @@ import { grey } from '@material-ui/core/colors';
 import {Provider} from 'react-redux'
 import {createStore} from 'redux'
 import reducer from '../src/Reducer/index.js'
+var admin = require("firebase-admin");
+
+var serviceAccount = require("./Secret/newkey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 const theme = createMuiTheme({
   palette: {
