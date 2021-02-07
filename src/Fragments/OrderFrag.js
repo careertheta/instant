@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { db } from '../config';
+const Nexmo = require('nexmo');
 
 
 const useStyles = makeStyles({
@@ -11,6 +12,15 @@ const useStyles = makeStyles({
       minWidth: 650,
     },
   });
+
+  const nexmo = new Nexmo({
+    apiKey: 'bc9b2b3d',
+    apiSecret: 'ClIPkrOHdN7vg9YG',
+  });
+
+const from = 'Vonage APIs';
+const to = '918638810822';
+const text = 'Hello from Vonage SMS API';
 
 const OrderFrag = () => {
 
@@ -77,19 +87,21 @@ const OrderFrag = () => {
         })
         .then(() => {
 
+            nexmo.message.sendSms(from, to, text);
+
             
-            fetch('https://login.99smsservice.com/sms/api?action=send-sms&api_key=bUhqZGRJeW5zcnRvaGVFQ3hpZ0o=', {
-                method: 'POST',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  from: 'SMSEXP',
-                  to:num,
-                  sms: `Your Order with Order No - ${id} has been -- ACCEPTED -- regards from Crystal Restaurant, Lumding`
-                })
-              });
+            // fetch('https://login.99smsservice.com/sms/api?action=send-sms&api_key=bUhqZGRJeW5zcnRvaGVFQ3hpZ0o=', {
+            //     method: 'POST',
+            //     headers: {
+            //       Accept: 'application/json',
+            //       'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({
+            //       from: 'SMSEXP',
+            //       to:num,
+            //       sms: `Your Order with Order No - ${id} has been -- ACCEPTED -- regards from Crystal Restaurant, Lumding`
+            //     })
+            //   });
 
             swal({
                 title: "Good job!",
