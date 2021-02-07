@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { db } from '../config';
-var admin = require("firebase-admin");
 
 
 const useStyles = makeStyles({
@@ -79,46 +78,27 @@ const OrderFrag = () => {
         })
         .then(() => {
 
-            var token = ['eKncJnZgQ-G2SD7x5k_o_O:APA91bEq-Vj3NburZPH-oc-EJVhVFsrI8kCQO0I0eMs_7Yc6KRgvI78085w-WHVi7TpnsgrDWRX2VyJGH23pXyytWcbi5ZNcBPeK8P4n7CYkz5dryOJkDuXjL-mmxWGkj2K2ZqNMYwjY'];
-            var payload = {
-                notification:{
-                    title:"This is bishal",
-                    body:"ok boss"
-                }
-            }
-
-            var options = {
-                priority: 'high',
-
-            }
-            admin.messaging().sendToDevice(token, payload, options)
-            .then(function(response){
-                console.log(response)
-            })
-            .catch(function(error){
-                console.log(error)
-            })
-
-        // fetch(`https://rest.nexmo.com/sms/json?from=Vonage%20APIs&to=91${num}&text=${text}&api_key=bc9b2b3d&api_secret=ClIPkrOHdN7vg9YG`, {
-        // mode: 'no-cors',
-        // method: 'POST',
-        // headers: {
-        //   Accept: 'application/json',
-        //   'Content-Type': 'application/json'
-        // },
-        // })
-        // .then(response => {
-        //     console.log(response)
-        //     swal({
-        //         title: "Good job!",
-        //         text: "Order Accepted",
-        //         icon: "success",
-        //         button: "Ok!",
-        //       });
-        // })
-        // .catch(err => {
-        //     console.log(err)
-        // })
+           
+        fetch(`https://rest.nexmo.com/sms/json?from=Vonage%20APIs&to=91${num}&text=${text}&api_key=bc9b2b3d&api_secret=ClIPkrOHdN7vg9YG`, {
+        mode: 'no-cors',
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        })
+        .then(response => {
+            console.log(response)
+            swal({
+                title: "Good job!",
+                text: "Order Accepted",
+                icon: "success",
+                button: "Ok!",
+              });
+        })
+        .catch(err => {
+            console.log(err)
+        })
         });
     }
 

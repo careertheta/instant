@@ -10,13 +10,34 @@ import { grey } from '@material-ui/core/colors';
 import {Provider} from 'react-redux'
 import {createStore} from 'redux'
 import reducer from '../src/Reducer/index.js'
-var admin = require("firebase-admin");
+// var admin = require("firebase-admin");
 
-var serviceAccount = require("./Secret/newkey.json");
+// var serviceAccount = require("./Secret/newkey.json");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount)
+// });
+
+// var token = ['eKncJnZgQ-G2SD7x5k_o_O:APA91bEq-Vj3NburZPH-oc-EJVhVFsrI8kCQO0I0eMs_7Yc6KRgvI78085w-WHVi7TpnsgrDWRX2VyJGH23pXyytWcbi5ZNcBPeK8P4n7CYkz5dryOJkDuXjL-mmxWGkj2K2ZqNMYwjY'];
+// var payload = {
+//     notification:{
+//         title:"This is bishal",
+//         body:"ok boss"
+//     }
+// }
+
+// var options = {
+//     priority: 'high',
+
+// }
+// admin.messaging().sendToDevice(token, payload, options)
+// .then(function(response){
+//     console.log(response)
+// })
+// .catch(function(error){
+//     console.log(error)
+// })
+
 
 const theme = createMuiTheme({
   palette: {
