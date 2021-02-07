@@ -4,23 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import { db } from '../config';
-const Nexmo = require('nexmo');
-
 
 const useStyles = makeStyles({
     table: {
       minWidth: 650,
     },
   });
-
-  const nexmo = new Nexmo({
-    apiKey: 'bc9b2b3d',
-    apiSecret: 'ClIPkrOHdN7vg9YG',
-  });
-
-const from = 'Vonage APIs';
-const to = '918638810822';
-const text = 'Hello from Vonage SMS API';
 
 const OrderFrag = () => {
 
@@ -79,7 +68,7 @@ const OrderFrag = () => {
     }, [alldata.restro.status])
 
     const acceptOrder = (id, num) =>{
-        console.log(id)
+        const text = `Your Order ${id} Has Been Accepted with regards from Crystal Restaurant!`
         db.collection('Orders')
         .doc(id)
         .update({
@@ -87,28 +76,26 @@ const OrderFrag = () => {
         })
         .then(() => {
 
-            nexmo.message.sendSms(from, to, text);
-
-            
-            // fetch('https://login.99smsservice.com/sms/api?action=send-sms&api_key=bUhqZGRJeW5zcnRvaGVFQ3hpZ0o=', {
-            //     method: 'POST',
-            //     headers: {
-            //       Accept: 'application/json',
-            //       'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify({
-            //       from: 'SMSEXP',
-            //       to:num,
-            //       sms: `Your Order with Order No - ${id} has been -- ACCEPTED -- regards from Crystal Restaurant, Lumding`
-            //     })
-            //   });
-
+        fetch(`https://rest.nexmo.com/sms/json?from=Vonage%20APIs&to=91${num}&text=${text}&api_key=bc9b2b3d&api_secret=ClIPkrOHdN7vg9YG`, {
+        mode: 'no-cors',
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        })
+        .then(response => {
+            console.log(response)
             swal({
                 title: "Good job!",
                 text: "Order Accepted",
                 icon: "success",
                 button: "Ok!",
               });
+        })
+        .catch(err => {
+            console.log(err)
+        })
         });
     }
 
@@ -163,21 +150,25 @@ const OrderFrag = () => {
                 })
                 .then(() => {
 
-                    fetch('https://login.99smsservice.com/sms/api?action=send-sms&api_key=bUhqZGRJeW5zcnRvaGVFQ3hpZ0o=', {
-                        method: 'POST',
-                        headers: {
-                          Accept: 'application/json',
-                          'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                          from: 'SMSEXP',
-                          to:num,
-                          sms: `Your Order with Order No - ${id} has been -- CANCELLED -- regards from Crystal Restaurant, Lumding`
-                        })
-                      });
-
-                    swal("Order Cancelled!", {
-                        icon: "success",
+                    const text = `Your Order ${id} Has Been Cancelled for some reason with regards from Crystal Restaurant!`
+                    fetch(`https://rest.nexmo.com/sms/json?from=Vonage%20APIs&to=91${num}&text=${text}&api_key=bc9b2b3d&api_secret=ClIPkrOHdN7vg9YG`, {
+                    mode: 'no-cors',
+                    method: 'POST',
+                    headers: {
+                      Accept: 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    })
+                    .then(response => {
+                        swal({
+                            title: "Good job!",
+                            text: "Order Cancelled",
+                            icon: "success",
+                            button: "Ok!",
+                          });
+                    })
+                    .catch(err => {
+                        console.log(err)
                     });
                 });
             } else {
