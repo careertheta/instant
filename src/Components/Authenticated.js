@@ -10,7 +10,9 @@ const Authenticated = (props) => {
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        db.collection('category').get()
+        db.collection('category')
+        .orderBy('id', 'asc')
+        .get()
         .then(querySnapshot => {
           const catTop = [];
           querySnapshot.forEach(documentSnapshot => {

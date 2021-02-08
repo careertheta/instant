@@ -8,6 +8,7 @@ const SettingFrag = () => {
     const [dcharge, setDcharge] = useState()
     const [mcharge, setMcharge] = useState()
     const [version, setVersion] = useState()
+    const [alert, setAlert] = useState()
     const [loading, setLoading] = useState(true)
 
     useEffect(()=>{
@@ -18,6 +19,7 @@ const SettingFrag = () => {
             setDcharge(documentSnapshot.data().dcharge);
             setMcharge(documentSnapshot.data().mcharge)
             setVersion(documentSnapshot.data().appversion)
+            setAlert(documentSnapshot.data().alert)
             setTimeout(() => {
                 setLoading(false)
             }, 1000);
@@ -42,6 +44,7 @@ const SettingFrag = () => {
                 dcharge: parseInt(dcharge, 10),
                 mcharge:  parseInt(mcharge, 10),
                 appversion:version,
+                alert:alert
             })
             .then(() => {
                 swal({
@@ -78,11 +81,19 @@ const SettingFrag = () => {
           <br/>
 
           <TextField
+          onChange={e => setAlert(e.target.value)}
+          value={alert}
+          color="secondary" size="small" id="dch"  label="Order Update" variant="outlined" fullWidth margin="normal" />
+         
+          <br/>
+
+          <TextField
           onChange={e => setVersion(e.target.value)}
           value={version}
           color="secondary" size="small" id="dch"  label="App Version" variant="outlined" fullWidth margin="normal" />
          
           <br/>
+
 
           <Button onClick={()=>update()} variant="contained" color="primary" fullWidth>
               Update

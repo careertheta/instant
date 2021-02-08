@@ -70,7 +70,6 @@ const OrderFrag = () => {
     }, [alldata.restro.status])
 
     const acceptOrder = (id, num) =>{
-        const text = `Your Order ${id} Has Been Accepted with regards from Crystal Restaurant!`
         db.collection('Orders')
         .doc(id)
         .update({
@@ -78,28 +77,49 @@ const OrderFrag = () => {
         })
         .then(() => {
 
-           
-        fetch(`https://rest.nexmo.com/sms/json?from=Vonage%20APIs&to=91${num}&text=${text}&api_key=bc9b2b3d&api_secret=ClIPkrOHdN7vg9YG`, {
-        mode: 'no-cors',
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        })
-        .then(response => {
-            console.log(response)
-            swal({
-                title: "Good job!",
-                text: "Order Accepted",
-                icon: "success",
-                button: "Ok!",
+            const text = `Your Order ${id} Has Been Accepted with regards from Crystal Restaurant!`
+            fetch(`https://login.99smsservice.com/sms/api?action=send-sms&api_key=bUhqZGRJeW5zcnRvaGVFQ3hpZ0o=&to=${num}&from=SMSEXP&sms=${text}`, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+              }
+            })
+              .then(response => {
+                  console.log("Success")
+
+              })
+              .catch(err => {
+                  console.log("Some")
               });
-        })
-        .catch(err => {
-            console.log(err)
-        })
-        });
+          })
+          .catch(err => {
+              console.log(err)
+          });
+
+           
+        // fetch(`https://rest.nexmo.com/sms/json?from=Vonage%20APIs&to=91${num}&text=${text}&api_key=bc9b2b3d&api_secret=ClIPkrOHdN7vg9YG`, {
+        // mode: 'no-cors',
+        // method: 'POST',
+        // headers: {
+        //   Accept: 'application/json',
+        //   'Content-Type': 'application/json'
+        // },
+        // })
+        // .then(response => {
+        //     console.log(response)
+        //     swal({
+        //         title: "Good job!",
+        //         text: "Order Accepted",
+        //         icon: "success",
+        //         button: "Ok!",
+        //       });
+        // })
+        // .catch(err => {
+        //     console.log(err)
+        // })
+        // });
     }
 
     const onTheWayOrder = (id) =>{
@@ -153,26 +173,22 @@ const OrderFrag = () => {
                 })
                 .then(() => {
 
-                    const text = `Your Order ${id} Has Been Cancelled for some reason with regards from Crystal Restaurant!`
-                    fetch(`https://rest.nexmo.com/sms/json?from=Vonage%20APIs&to=91${num}&text=${text}&api_key=bc9b2b3d&api_secret=ClIPkrOHdN7vg9YG`, {
-                    mode: 'no-cors',
-                    method: 'POST',
-                    headers: {
-                      Accept: 'application/json',
-                      'Content-Type': 'application/json'
-                    },
+                    const textcancel = `Your Order ${id} Has Been Cancelled with regards from Crystal Restaurant!`
+                    fetch(`https://login.99smsservice.com/sms/api?action=send-sms&api_key=bUhqZGRJeW5zcnRvaGVFQ3hpZ0o=&to=${num}&from=SMSEXP&sms=${textcancel}`, {
+                      method: 'POST',
+                      mode: 'no-cors',
+                      headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                      }
                     })
-                    .then(response => {
-                        swal({
-                            title: "Good job!",
-                            text: "Order Cancelled",
-                            icon: "success",
-                            button: "Ok!",
-                          });
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    });
+                      .then(response => {
+                          console.log("Success")
+        
+                      })
+                      .catch(err => {
+                          console.log("Some")
+                      });
                 });
             } else {
               swal("Order is safe!");

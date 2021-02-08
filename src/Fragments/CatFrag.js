@@ -187,23 +187,46 @@ const CatFrag = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">
-                <Avatar alt="Remy Sharp" src={row.pic} />
-              </TableCell>
-              <TableCell align="left">
-               <Button variant="outlined" color="primary" onClick={()=> editStatus(row.status, row.key)}> Update</Button>
-                
-              </TableCell>
-              <TableCell align="left">
-                <Button variant="outlined" color="primary" onClick={()=> editCategory(row.key, row.name, row.pic)}>EDIT</Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {data.map((row, index) => {
+            if(row.status == true){
+              return(
+                <TableRow key={index}>
+                <TableCell component="th" scope="row">
+                  {row.id}) {row.name}
+                </TableCell>
+                <TableCell align="right">
+                  <Avatar alt="Remy Sharp" src={row.pic} />
+                </TableCell>
+                <TableCell align="left" style={{backgroundColor:"green"}}>
+                 <Button variant="outlined" color="secondary" onClick={()=> editStatus(row.status, row.key)}> Update</Button>
+                  
+                </TableCell>
+                <TableCell align="left">
+                  <Button variant="outlined" color="primary" onClick={()=> editCategory(row.key, row.name, row.pic)}>EDIT</Button>
+                </TableCell>
+              </TableRow>
+              )
+            }else{
+              return(
+                <TableRow key={index}>
+                <TableCell component="th" scope="row">
+                {row.id}) {row.name}
+                </TableCell>
+                <TableCell align="right">
+                  <Avatar alt="Remy Sharp" src={row.pic} />
+                </TableCell>
+                <TableCell align="left" style={{backgroundColor:"red"}}>
+                 <Button variant="outlined" color="secondary" onClick={()=> editStatus(row.status, row.key)}> Update</Button>
+                  
+                </TableCell>
+                <TableCell align="left">
+                  <Button variant="outlined" color="primary" onClick={()=> editCategory(row.key, row.name, row.pic)}>EDIT</Button>
+                </TableCell>
+              </TableRow>
+              )
+            }
+          
+        })}
         </TableBody>
       </Table> }
     </TableContainer>

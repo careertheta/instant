@@ -43,7 +43,9 @@ const EditProductFrag = () => {
     useEffect(()=>{
         // setData(alldata.categories)
         setCatlist(alldata.categories)
-        db.collection('products').get()
+        db.collection('products')
+                .orderBy('category', 'desc')
+                .get()
                 .then(querySnapshot => {
                 const productTop = [];
                 querySnapshot.forEach(documentSnapshot => {
@@ -278,27 +280,54 @@ const EditProductFrag = () => {
                 </TableRow>
                 </TableHead>
                 <TableBody>
-                {data.map((row) => (
-                    <TableRow key={row.name}>
-                    <TableCell component="th" scope="row">
-                        {row.name}
-                    </TableCell>
-                    <TableCell align="right">
-                        <Avatar alt="Remy Sharp" src={row.pic} />
-                    </TableCell>
-                    <TableCell align="left">
-                    <Button variant="outlined" color="primary" onClick={()=> editStatus(row.status, row.key)}> Update</Button>
-                        
-                    </TableCell>
-                    <TableCell align="left">
-                        <Button variant="outlined" color="primary" onClick={()=> 
-                            editProduct(row.name, row.pic, row.category, row.key, 
-                            row.id, row.type.choiceone.name,  row.type.choiceone.price,
-                            row.type.choicetwo.name,  row.type.choicetwo.price,
-                            row.type.choicethree.name,  row.type.choicethree.price)}>EDIT</Button>
-                    </TableCell>
-                    </TableRow>
-                ))}
+                {data.map((row, index) => {
+
+                    if(row.status == true){
+                    return( 
+                        <TableRow key={index}>
+                        <TableCell component="th" scope="row">
+                            {row.category}) {row.name}
+                        </TableCell>
+                        <TableCell align="right">
+                            <Avatar alt="Remy Sharp" src={row.pic} />
+                        </TableCell>
+                        <TableCell align="left" style={{backgroundColor:"green"}}>
+                        <Button variant="outlined" color="secondary" onClick={()=> editStatus(row.status, row.key)}> Update</Button>
+                            
+                        </TableCell>
+                        <TableCell align="left">
+                            <Button variant="outlined" color="primary" onClick={()=> 
+                                editProduct(row.name, row.pic, row.category, row.key, 
+                                row.id, row.type.choiceone.name,  row.type.choiceone.price,
+                                row.type.choicetwo.name,  row.type.choicetwo.price,
+                                row.type.choicethree.name,  row.type.choicethree.price)}>EDIT</Button>
+                        </TableCell>
+                        </TableRow>
+                    )
+                }else{
+                    return( 
+                        <TableRow key={index}>
+                        <TableCell component="th" scope="row">
+                           {row.category}) {row.name}
+                        </TableCell>
+                        <TableCell align="right">
+                            <Avatar alt="Remy Sharp" src={row.pic} />
+                        </TableCell>
+                        <TableCell align="left" style={{backgroundColor:"red"}}>
+                        <Button variant="outlined" color="secondary" onClick={()=> editStatus(row.status, row.key)}> Update</Button>
+                            
+                        </TableCell>
+                        <TableCell align="left">
+                            <Button variant="outlined" color="primary" onClick={()=> 
+                                editProduct(row.name, row.pic, row.category, row.key, 
+                                row.id, row.type.choiceone.name,  row.type.choiceone.price,
+                                row.type.choicetwo.name,  row.type.choicetwo.price,
+                                row.type.choicethree.name,  row.type.choicethree.price)}>EDIT</Button>
+                        </TableCell>
+                        </TableRow>
+                    )
+                }
+                })}
                 </TableBody>
             </Table> }
             </TableContainer>
